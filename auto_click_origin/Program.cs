@@ -73,11 +73,24 @@ namespace auto_click_by_pos
                 if (isConnected)
                 {
                     Console.WriteLine("Connected to 160.48.249.98");
+                    byte[] startToolReq = { 0x4B, 0x55, 0x00, 0x00, 0x0C, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x5A, 0x4D, 0x7E };// start tool
+                    byte[] startToolRes = { 0x18, 0xE4, 0x7E };// start tool
+                    bool startToolResult =  EthernetCommand.SendPacket(startToolReq,startToolRes);
+                    if(startToolResult){
+                        Console.WriteLine("Start Tool Success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Start Tool Failed!");
+                    }
+                    
                 }
                 else
                 {
                     Console.WriteLine("Failed to connect to 160.48.249.98");
                 }
+                
+
                 while(true);
             }
             if(args[0]=="1"){

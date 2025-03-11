@@ -60,6 +60,11 @@ namespace send_ethernet
             List<byte> response = responseBuffer.Take(bytesRead).ToList();
             PrintHex("Received response: ", response);
 
+            if (expectedResponse == null || expectedResponse.Count == 0)
+            {
+                return true;
+            }
+
             return response.ContainsSequence(expectedResponse);
         }
 

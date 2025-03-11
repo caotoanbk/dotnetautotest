@@ -45,7 +45,7 @@ namespace auto_click_by_pos
         static Point startPoint;
         static Point finishPoint;
         static Point quitPoint;
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             DateTime currentDate = DateTime.Now;
             string formattedDate = currentDate.ToString("yyMMdd");
@@ -67,7 +67,17 @@ namespace auto_click_by_pos
                 Thread thread2 = new Thread(new ParameterizedThreadStart(PingAfterDelay));
                 thread.Start(parametersBam);
                 thread2.Start(parametersNad);
-                Thread.Sleep(2000);
+                Thread.Sleep(20000);
+                
+                bool isConnected = await EthernetCommand.Connect("160.48.249.98", 20000);
+                if (isConnected)
+                {
+                    Console.WriteLine("Connected to 160.48.249.98");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to connect to 160.48.249.98");
+                }
                 while(true);
             }
             if(args[0]=="1"){

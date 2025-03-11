@@ -238,11 +238,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\4. Workspace\\5. dotnet\\dotnet\\auto_click\\auto_click.csproj",
+      "projectUniqueName": "D:\\4. Workspace\\5. dotnet\\dotnet\\auto_click_origin\\auto_click.csproj",
       "projectName": "auto_click",
-      "projectPath": "D:\\4. Workspace\\5. dotnet\\dotnet\\auto_click\\auto_click.csproj",
+      "projectPath": "D:\\4. Workspace\\5. dotnet\\dotnet\\auto_click_origin\\auto_click.csproj",
       "packagesPath": "C:\\Users\\tung4.nguyen\\.nuget\\packages\\",
-      "outputPath": "D:\\4. Workspace\\5. dotnet\\dotnet\\auto_click\\obj\\",
+      "outputPath": "D:\\4. Workspace\\5. dotnet\\dotnet\\auto_click_origin\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\tung4.nguyen\\AppData\\Roaming\\NuGet\\NuGet.Config"

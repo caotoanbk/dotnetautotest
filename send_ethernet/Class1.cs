@@ -1,6 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace send_ethernet
 {
@@ -10,12 +11,32 @@ namespace send_ethernet
         private static NetworkStream _stream;
         private static Timer _reconnectTimer;
 
-        public static void Connect(string ipAddress, int port)
+        public static async Task<bool> Connect(string ipAddress, int port, int timeoutMilliseconds = 5000)
         {
             _client = new TcpClient();
-            _client.Connect(ipAddress, port);
-            _stream = _client.GetStream();
-            StartReconnectTimer(ipAddress, port);
+            var cts = new CancellationTokenSource(timeoutMilliseconds);
+
+            try
+            {
+                await _client.ConnectAsync(ipAddress, port).WaitAsync(cts.Token);
+                _stream = _client.GetStream();
+                StartReconnectTimer(ipAddress, port);
+                return true;
+            }
+            catch (OperationCanceledException)
+            {
+                // Connection attempt timed out
+                _client.Close();
+                _client = null;
+                return false;
+            }
+            catch
+            {
+                // Other connection errors
+                _client.Close();
+                _client = null;
+                return false;
+            }
         }
 
         public static bool IsConnected()
@@ -25,37 +46,61 @@ namespace send_ethernet
 
         public static bool SendPacket(List<byte> packet, List<byte> expectedResponse)
         {
-            EnsureConnected();
+            if (!EnsureConnected())
+            {
+                throw new InvalidOperationException("Not connected to any server.");
+            }
 
+            PrintHex("Sending packet: ", packet);
             _stream.Write(packet.ToArray(), 0, packet.Count);
 
             byte[] responseBuffer = new byte[1024];
             int bytesRead = _stream.Read(responseBuffer, 0, responseBuffer.Length);
 
             List<byte> response = responseBuffer.Take(bytesRead).ToList();
+            PrintHex("Received response: ", response);
 
             return response.ContainsSequence(expectedResponse);
         }
 
-        private static void EnsureConnected()
+        private static bool EnsureConnected()
         {
             if (_client == null || !_client.Connected)
             {
-                throw new InvalidOperationException("Not connected to any server.");
+                try
+                {
+                    // Attempt to reconnect
+                    _client = new TcpClient();
+                    _client.Connect("160.48.199.98", 20000); // Replace with actual IP and port
+                    _stream = _client.GetStream();
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
             }
+            return true;
+        }
+
+        public static void Disconnect()
+        {
+            _reconnectTimer?.Dispose();
+            _stream?.Close();
+            _client?.Close();
+            _client = null;
+            _stream = null;
         }
 
         private static void StartReconnectTimer(string ipAddress, int port)
         {
-            _reconnectTimer = new Timer(state =>
+            _reconnectTimer = new Timer(async state =>
             {
                 if (_client == null || !_client.Connected)
                 {
                     try
                     {
-                        _client = new TcpClient();
-                        _client.Connect(ipAddress, port);
-                        _stream = _client.GetStream();
+                        await Connect(ipAddress, port);
                     }
                     catch
                     {
@@ -75,6 +120,11 @@ namespace send_ethernet
                 }
             }
             return false;
+        }
+
+        private static void PrintHex(string prefix, List<byte> data)
+        {
+            Console.WriteLine(prefix + BitConverter.ToString(data.ToArray()).Replace("-", " "));
         }
     }
 }

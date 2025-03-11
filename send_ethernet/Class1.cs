@@ -55,7 +55,12 @@ namespace send_ethernet
             _stream.Write(packet.ToArray(), 0, packet.Count);
 
             byte[] responseBuffer = new byte[1024];
-            int bytesRead = _stream.Read(responseBuffer, 0, responseBuffer.Length);
+            var readTask = _stream.ReadAsync(responseBuffer, 0, responseBuffer.Length);
+            if (!readTask.Wait(3000)) // 5000 milliseconds timeout
+            {
+                throw new TimeoutException("The read operation timed out.");
+            }
+            int bytesRead = readTask.Result;
 
             List<byte> response = responseBuffer.Take(bytesRead).ToList();
             PrintHex("Received response: ", response);

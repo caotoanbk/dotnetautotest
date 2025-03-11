@@ -1,0 +1,52 @@
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.exe
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.deps.json
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.runtimeconfig.json
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.runtimeconfig.dev.json
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\ref\auto_click_by_pos.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.pdb
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\System.Drawing.Common.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\ScreenBitmap.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\ScreenBitmap.pdb
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.csprojAssemblyReference.cache
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.AssemblyInfoInputs.cache
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.AssemblyInfo.cs
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.csproj.CoreCompileInputs.cache
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.csproj.CopyComplete
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\obj\Debug\net5.0\ref\auto_click_by_pos.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.pdb
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.genruntimeconfig.cache
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\Mouse.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\auto_click_by_pos\bin\Debug\net5.0\Mouse.pdb
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.exe
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.deps.json
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.runtimeconfig.json
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.runtimeconfig.dev.json
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.dll
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\auto_click_by_pos.pdb
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\Microsoft.Win32.SystemEvents.dll
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\System.Drawing.Common.dll
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\Mouse.dll
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\ScreenBitmap.dll
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\ScreenBitmap.pdb
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\bin\Debug\net5.0\Mouse.pdb
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.csproj.AssemblyReference.cache
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.GeneratedMSBuildEditorConfig.editorconfig
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.AssemblyInfoInputs.cache
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.AssemblyInfo.cs
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.csproj.CoreCompileInputs.cache
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_cli.2BDDFC79.Up2Date
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.dll
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\obj\Debug\net5.0\refint\auto_click_by_pos.dll
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.pdb
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\obj\Debug\net5.0\auto_click_by_pos.genruntimeconfig.cache
+D:\4. Workspace\5. dotnet\dotnet\auto_click_by_pos\obj\Debug\net5.0\ref\auto_click_by_pos.dll

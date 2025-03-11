@@ -1,0 +1,16 @@
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\obj\Debug\net5.0\ref.csprojAssemblyReference.cache
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\obj\Debug\net5.0\ref.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\obj\Debug\net5.0\ref.AssemblyInfoInputs.cache
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\obj\Debug\net5.0\ref.AssemblyInfo.cs
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\obj\Debug\net5.0\ref.csproj.CoreCompileInputs.cache
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\bin\Debug\net5.0\ref.exe
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\bin\Debug\net5.0\ref.deps.json
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\bin\Debug\net5.0\ref.runtimeconfig.json
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\bin\Debug\net5.0\ref.runtimeconfig.dev.json
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\bin\Debug\net5.0\ref.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\bin\Debug\net5.0\ref\ref.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\bin\Debug\net5.0\ref.pdb
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\obj\Debug\net5.0\ref.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\obj\Debug\net5.0\ref\ref.dll
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\obj\Debug\net5.0\ref.pdb
+C:\Users\tung4.nguyen\Desktop\dotnet\ref\obj\Debug\net5.0\ref.genruntimeconfig.cache

@@ -53,10 +53,11 @@ namespace send_ethernet
 
             PrintHex("Sending packet: ", packet);
             _stream.Write(packet.ToArray(), 0, packet.Count);
+            _stream.Flush(); // Ensure the packet is sent immediately
 
             byte[] responseBuffer = new byte[1024];
             var readTask = _stream.ReadAsync(responseBuffer, 0, responseBuffer.Length);
-            if (!readTask.Wait(3000)) // 5000 milliseconds timeout
+            if (!readTask.Wait(3000)) // 3000 milliseconds timeout
             {
                 throw new TimeoutException("The read operation timed out.");
             }

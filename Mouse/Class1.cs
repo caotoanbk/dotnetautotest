@@ -35,14 +35,24 @@ namespace Mouse
         }
         public static void DoMouseLeftDoubleClick(int x,int y,bool returnCursor)
         {
-            Point currentPoint = new();
-            GetCursorPos(ref currentPoint);
-            SetCursorPos(x,y);
-            mouse_event(MOUSEEVENTF_LEFTDOWN , 0, 0, 0, 0);
-            Thread.Sleep(50);
-            mouse_event( MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-            Thread.Sleep(50);
-            if(returnCursor)SetCursorPos(currentPoint.X,currentPoint.Y);
+             Point currentPoint = new();
+             GetCursorPos(ref currentPoint);
+
+            SetCursorPos(x, y);
+            Thread.Sleep(100); // Let the move settle
+
+            // First click
+            mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+            mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+
+            Thread.Sleep(100); // Short delay between clicks (must be < system double-click time)
+
+            // Second click
+            mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+            mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+
+            if (returnCursor)
+                SetCursorPos(currentPoint.X, currentPoint.Y);
         }
         public static void DoMouseRightClick(int x,int y,bool returnCursor)
         {

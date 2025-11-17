@@ -295,7 +295,17 @@ namespace auto_click_by_pos
                     {
                         Console.WriteLine("Start Tool Failed!");
                     }
-
+                    
+                    List<byte> rebootReq = new List<byte> { 0x4B, 0x55, 0x00, 0x00, 0x0B, 0x00, 0x01, 0x00, 0x80, 0x50, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x40, 0x7E };// reboot
+                    List<byte> rebootRes = new List<byte> { 0xF3, 0x90, 0x7E };// reboot
+                    bool rebootResult =  EthernetCommand.SendPacket(rebootReq,rebootRes);
+                    if(rebootResult){
+                        Console.WriteLine("Reboot Success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Reboot Failed!");
+                    }
                 }
                 else
                 {

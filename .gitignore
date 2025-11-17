@@ -1,3 +1,18 @@
+# Build artifacts
 **/bin/
 **/obj/
-SCREENSHOT
+
+# User-specific
+*.user
+*.vs/
+
+# NuGet packages (nếu dùng packages folder cục bộ)
+packages/
+
+# Logs / temp
+*.log
+temp/
+
+# Images
+*.png
+*.PNG

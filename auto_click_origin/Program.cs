@@ -9,12 +9,27 @@ using LoggingLibrary;
 using send_ethernet;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using Tesseract;
 
 namespace auto_click_by_pos
 {
+    
+    public static class PixConverter
+    {
+        public static Pix ToPix(Bitmap bitmap)
+        {
+            using (var ms = new MemoryStream())
+            {
+                bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                ms.Position = 0;
+                return Pix.LoadFromMemory(ms.ToArray());
+            }
+        }
+    }
     class Program
     {
-        public class PingParam{
+        public class PingParam
+        {
             public string address { get; set; }
             public int delay { get; set; }
         }
@@ -25,24 +40,24 @@ namespace auto_click_by_pos
             await Task.Delay(param.delay);
             // Execute the task
             var result = PingClass.PingHost(param.address);
-            Console.WriteLine("Ping " + param.address + " "+ result.ToString() + " after " +param.delay.ToString());
+            Console.WriteLine("Ping " + param.address + " " + result.ToString() + " after " + param.delay.ToString());
         }
         static Logger LogObj;
-        static Point interfaceStart = new(1970,81);
-        static Point interfaceFinish = new(1754,411);
-        static Point interfaceQuit = new(2724,80);
+        static Point interfaceStart = new(1970, 81);
+        static Point interfaceFinish = new(1754, 411);
+        static Point interfaceQuit = new(2724, 80);
 
-        static Point subClick1 = new(2045,113);
+        static Point subClick1 = new(2045, 113);
 
-        static Point oneStart = new(91,47);
-        static Point oneFinish =  new(1754,411);
+        static Point oneStart = new(91, 47);
+        static Point oneFinish = new(1754, 411);
 
-        static Point oneQuit = new(612,88);
+        static Point oneQuit = new(612, 88);
 
-        static Point twoStart = new(2971,85);
-        static Point twoFinish = new(3762,329);
+        static Point twoStart = new(2971, 85);
+        static Point twoFinish = new(3762, 329);
 
-        static Point twoQuit = new(2968,86);
+        static Point twoQuit = new(2968, 86);
 
         static Point startPoint;
         static Point finishPoint;
@@ -77,8 +92,111 @@ namespace auto_click_by_pos
                 }
 
                 // Save to file (PNG, JPEG, BMP supported)
-                bitmap.Save(filePath, ImageFormat.Png);
+                bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
             }
+        }
+
+        static string GetJudgeLabel()
+        {
+            string result = "TESTING";
+            Point top_left = new(1503, 439);
+            Point bottom_right = new(1648, 487);
+            int width = bottom_right.X - top_left.X;
+            int height2 = bottom_right.Y - top_left.Y;
+
+            Rectangle rect = new Rectangle(top_left.X, top_left.Y, width, height2);
+            using (Bitmap screenshot = new Bitmap(rect.Width, rect.Height))
+            {
+                using (Graphics g = Graphics.FromImage(screenshot))
+                {
+                    g.CopyFromScreen(rect.Location, Point.Empty, rect.Size);
+                }
+
+                // Optional: Save screenshot for debug
+                screenshot.Save("screenshot.png", System.Drawing.Imaging.ImageFormat.Png);
+
+                // OCR
+                string tessDataPath = "./tessdata";
+                using (var engine = new TesseractEngine(tessDataPath, "eng", EngineMode.Default))
+                using (var pix = PixConverter.ToPix(screenshot)) //Convert Bitmap to Pix
+                using (var page = engine.Process(pix))
+                {
+                    result = page.GetText();
+
+                    // Console.WriteLine("Text in captured screen area:");
+                    // Console.WriteLine(result.Trim());
+                }
+
+            }
+
+            return result;
+        }
+
+        static string GetFailCmd(string measureStr)
+        {
+            string result = "";
+            bool flag = false;
+
+            Point top_left = new(59, 177);
+            Point bottom_right = new(574, 209);
+            Point cmd_result = new(623, 191);
+            Point measure_top_left = new(1014, 179);
+            Point measure_bottom_right = new(1274, 207);
+            // int height = bottom_right.Y - top_left.Y;
+            int height = 26;
+
+
+
+            for (int i = 0; i < 50; i++)
+            {
+                Color failColor = ScreenBitmap.GetColorAt(cmd_result.X, cmd_result.Y);
+                if (failColor.R == 220 || failColor.G == 20 || failColor.B == 60)
+                {
+
+                    int width = bottom_right.X - top_left.X;
+                    int height2 = bottom_right.Y - top_left.Y;
+
+                    Rectangle rect = new Rectangle(top_left.X, top_left.Y, width, height2);
+                    using (Bitmap screenshot = new Bitmap(rect.Width, rect.Height))
+                    {
+                        using (Graphics g = Graphics.FromImage(screenshot))
+                        {
+                            g.CopyFromScreen(rect.Location, Point.Empty, rect.Size);
+                        }
+
+                        // Optional: Save screenshot for debug
+                        screenshot.Save("screenshot.png", System.Drawing.Imaging.ImageFormat.Png);
+
+                        // OCR
+                        string tessDataPath = "./tessdata";
+                        using (var engine = new TesseractEngine(tessDataPath, "eng", EngineMode.Default))
+                        using (var pix = PixConverter.ToPix(screenshot)) //Convert Bitmap to Pix
+                        using (var page = engine.Process(pix))
+                        {
+                            result = page.GetText();
+
+                            // Console.WriteLine("Text in captured screen area:");
+                            // Console.WriteLine(result.Trim());
+                        }
+
+                    }
+
+
+
+
+
+                    break;
+                }
+
+                top_left.Y += height;
+                bottom_right.Y += height;
+                cmd_result.Y += height;
+                measure_top_left.Y += height;
+                measure_bottom_right.Y += height;
+            }
+
+
+            return result;
         }
         static async Task Main(string[] args)
         {
@@ -202,58 +320,85 @@ namespace auto_click_by_pos
             else if (args[0] == "toan")
             {
                 Console.WriteLine("toan");
-                Point START_BUTTON = new(74, 47);
-                Point INTERACTIVE_BUTTON = new(700, 51);
+                Point START_BUTTON = new(869, 129);
+                Point INTERACTIVE_BUTTON = new(1289, 131);
+                Point WUF_SEND = new(899, 729);
+                Point START_AUTO_SEND_NM = new(951, 754);
                 Point BENCH_RESET = new(279, 192);
                 Point PASS_LABEL = new(1364, 495);//0 128 0
                 Point FAIL_LABEL = new(1364, 491);// 220 20 60
                 Point CLR_DLT = new(85, 755);
+                Point PCAN_START_TRACE = new(1591, 89);
+                Point PCAN_STOP_TRACE = new(1654, 89);
+                bool usePcan = false;
+                var reproducingCmds = new List<string>
+                {
+                };
+                string judgeLabel = GetJudgeLabel();
+                Console.WriteLine("judgeLabel:" + judgeLabel);
                 while (true)
                 {
-                    Color finishColor = ScreenBitmap.GetColorAt(PASS_LABEL.X, PASS_LABEL.Y);
+                    // Color finishColor = ScreenBitmap.GetColorAt(PASS_LABEL.X, PASS_LABEL.Y);
+                    // Console.WriteLine(finishColor);
+                    judgeLabel = GetJudgeLabel();
+                    Console.WriteLine(judgeLabel);
                     Thread.Sleep(500);
-                    while (finishColor.R != 0 || finishColor.G != 128 || finishColor.B != 0)
+                    while (judgeLabel != "PASS")
                     {
                         // Console.WriteLine($"finishColor: {finishColor.R}, {finishColor.G}, {finishColor.B}");
                         // Console.WriteLine($"PASS_POS: {PASS_LABEL.X}, {PASS_LABEL.Y}");
-                        finishColor = ScreenBitmap.GetColorAt(PASS_LABEL.X, PASS_LABEL.Y);
+                        judgeLabel = GetJudgeLabel();
                         Thread.Sleep(500);
-                        Color failColor = ScreenBitmap.GetColorAt(FAIL_LABEL.X, FAIL_LABEL.Y);
-                        Thread.Sleep(500);
-                        if (failColor.R == 220 || failColor.G == 20 || failColor.B == 60)
+                        if (judgeLabel == "FAIL")
                         {
                             Console.WriteLine("FAIL keep power and delay wait 5S");
                             SaveFailImg();
-                            Thread.Sleep(25000);
-                            // MouseClick.DoMouseLeftDoubleClick(INTERACTIVE_BUTTON.X, INTERACTIVE_BUTTON.Y, true);
-                            // Thread.Sleep(800);
-                            // MouseClick.DoMouseLeftDoubleClick(INTERACTIVE_BUTTON.X, INTERACTIVE_BUTTON.Y, true);
-                            // Thread.Sleep(800);
-                            // MouseClick.DoMouseLeftDoubleClick(INTERACTIVE_BUTTON.X, INTERACTIVE_BUTTON.Y, true);
-                            // Thread.Sleep(800);
-                            // MouseClick.DoMouseLeftDoubleClick(BENCH_RESET.X, BENCH_RESET.Y, true);
-                            // Thread.Sleep(2000);
-                            // MouseClick.DoMouseLeftDoubleClick(BENCH_RESET.X, BENCH_RESET.Y, true);
-                            // Thread.Sleep(2000);
-                            // MouseClick.DoMouseLeftDoubleClick(BENCH_RESET.X, BENCH_RESET.Y, true);
-                            // Thread.Sleep(2000);
-                            // MouseClick.DoMouseLeftDoubleClick(BENCH_RESET.X, BENCH_RESET.Y, true);
-                            // Thread.Sleep(2000);
-                            // MouseClick.DoMouseLeftDoubleClick(BENCH_RESET.X, BENCH_RESET.Y, true);
+                            string measureResult = "";
+                            string failCmd = GetFailCmd(measureResult);
+                            Console.WriteLine(failCmd);
+                            //failCmd.Trim() == "[TCU_STD] START_TOOL" ||
+
+                            bool isFound = reproducingCmds.Any(cmd => failCmd.Trim().Contains(cmd));
+
+                            // if (!isFound)
+                            // {
+                            //     break;
+                            // }
+
+                            if (usePcan)
+                            {
+                                Thread.Sleep(2000);
+                                MouseClick.DoMouseLeftClick(PCAN_STOP_TRACE.X, PCAN_STOP_TRACE.Y, false);
+                                Thread.Sleep(200);
+                                MouseClick.DoMouseLeftClick(PCAN_STOP_TRACE.X, PCAN_STOP_TRACE.Y, false);
+                                Thread.Sleep(2000);
+                            }
                             Environment.Exit(0);
                         }
 
                     }
 
-                    Thread.Sleep(500);
+                    if (usePcan)
+                    {
+                        Thread.Sleep(300);
+                        MouseClick.DoMouseLeftClick(PCAN_STOP_TRACE.X, PCAN_STOP_TRACE.Y, false);
+                        Thread.Sleep(300);
+                        MouseClick.DoMouseLeftClick(PCAN_STOP_TRACE.X, PCAN_STOP_TRACE.Y, false);
+                    }
                     testTime++;
                     Console.WriteLine("Test Again! " + testTime.ToString());
-                    MouseClick.DoMouseLeftClick(START_BUTTON.X, START_BUTTON.Y, false);
-                    Thread.Sleep(700);
-                    MouseClick.DoMouseLeftClick(START_BUTTON.X, START_BUTTON.Y, true);
-                    Thread.Sleep(700);
-                    // MouseClick.DoMouseLeftDoubleClick(CLR_DLT.X, CLR_DLT.Y, true);
-                    Thread.Sleep(2000);
+                    Thread.Sleep(300);
+                    MouseClick.DoMouseLeftDoubleClick(START_BUTTON.X, START_BUTTON.Y, false);
+                    Thread.Sleep(300);
+                    MouseClick.DoMouseLeftDoubleClick(START_BUTTON.X, START_BUTTON.Y, false);
+                    if (usePcan)
+                    {
+                        Thread.Sleep(300);
+                        MouseClick.DoMouseLeftClick(PCAN_START_TRACE.X, PCAN_START_TRACE.Y, false);
+                        Thread.Sleep(300);
+                        MouseClick.DoMouseLeftClick(PCAN_START_TRACE.X, PCAN_START_TRACE.Y, false);
+                    }
+                    Thread.Sleep(3500);
                 }
             }
             else if (args[0] == "test_maita")

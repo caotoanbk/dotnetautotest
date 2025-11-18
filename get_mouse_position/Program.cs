@@ -7,16 +7,16 @@ using System.Threading;
 
 namespace get_mouse_position
 {
-    class Program
+    public class ScreenBitmap
     {
         [DllImport("user32.dll")]
-        static extern bool GetCursorPos(ref Point lpPoint);
+        public static extern bool GetCursorPos(ref Point lpPoint);
 
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);
 
         [DllImport("user32.dll")]
-        static extern bool SetProcessDPIAware();
+        public static extern bool SetProcessDPIAware();
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetDC(IntPtr hWnd);
@@ -29,20 +29,20 @@ namespace get_mouse_position
 
         static Bitmap screenPixel = new Bitmap(1, 1, PixelFormat.Format32bppArgb);
 
-        static void Main(string[] args)
-        {
-            SetProcessDPIAware(); // tránh lệch tọa độ do DPI virtualization
-            while (true)
-            {
-                Point cursor = new Point();
-                GetCursorPos(ref cursor);
-                var c1 = GetColorAt(cursor);
-                var c2 = GetColorAt_BitBlt(cursor);
-                var c3 = GetColorAt_GetPixel(cursor);
-                Console.WriteLine($"Pos {cursor.X},{cursor.Y} CopyFromScreen R{c1.R} G{c1.G} B{c1.B} | BitBlt R{c2.R} G{c2.G} B{c2.B} | GetPixel R{c3.R} G{c3.G} B{c3.B}");
-                Thread.Sleep(300);
-            }
-        }
+        // static void Main(string[] args)
+        // {
+        //     SetProcessDPIAware(); // tránh lệch tọa độ do DPI virtualization
+        //     while (true)
+        //     {
+        //         Point cursor = new Point();
+        //         GetCursorPos(ref cursor);
+        //         var c1 = GetColorAt(cursor);
+        //         var c2 = GetColorAt_BitBlt(cursor);
+        //         var c3 = GetColorAt_GetPixel(cursor);
+        //         Console.WriteLine($"Pos {cursor.X},{cursor.Y} CopyFromScreen R{c1.R} G{c1.G} B{c1.B} | BitBlt R{c2.R} G{c2.G} B{c2.B} | GetPixel R{c3.R} G{c3.G} B{c3.B}");
+        //         Thread.Sleep(300);
+        //     }
+        // }
 
         public static Color GetColorAt(Point location)
         {

@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Screen
 {
-    public static class ScreenBitmap
+    public static class ScreenBitmap_Old
     {
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
         public static extern int BitBlt(IntPtr hDC, int x, int y, int nWidth, int nHeight, IntPtr hSrcDC, int xSrc, int ySrc, int dwRop);

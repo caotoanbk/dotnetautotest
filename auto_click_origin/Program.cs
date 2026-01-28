@@ -11,6 +11,7 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using Tesseract;
 using get_mouse_position;
+using MyUtils;
 
 namespace auto_click_by_pos
 {
@@ -29,12 +30,17 @@ namespace auto_click_by_pos
     }
     class Program
     {
-        static Point START_BUTTON = new(1391, 234);
+        //DEFINE POSITION
+        static Point START_BUTTON = new(71,49);
+        static Point PASS_LABEL = new(1870, 484);//0 128 0
+        static Color PASS_COLOR = Color.FromArgb(0,128,0);
+        static Color FAIL_COLOR = Color.FromArgb(220,20,60);
+
+        //OPTIONAL
         static Point INTERACTIVE_BUTTON = new(1289, 131);
         static Point WUF_SEND = new(899, 729);
         static Point START_AUTO_SEND_NM = new(951, 754);
         static Point BENCH_RESET = new(279, 192);
-        static Point PASS_LABEL = new(2183, 622);//0 128 0
         static Point CLR_DLT = new(85, 755);
         static Point PCAN_START_TRACE = new(1591, 89);
         static Point PCAN_STOP_TRACE = new(1654, 89);
@@ -42,6 +48,7 @@ namespace auto_click_by_pos
         
         static List<string> reproducingCmds = new List<string>
         {
+            "DTC_ALL_CLEAR_32"
         };
         static void SaveFailImg()
         {
@@ -79,23 +86,25 @@ namespace auto_click_by_pos
         {
             string result = "";
 
-            Point top_left = new(59, 177);
-            Point bottom_right = new(574, 209);
-            Point cmd_result = new(623, 191);
-            Point measure_top_left = new(1014, 179);
-            Point measure_bottom_right = new(1274, 207);
+            Point topLeft = new(79, 181);
+            Point bottomRight = new(765, 208);
+            Point cmdResult = new(838, 194);
+            // Point measure_top_left = new(1014, 179); //OPTIONAL
+            // Point measure_bottom_right = new(1274, 207); //OPTIONAL
             // int height = bottom_right.Y - top_left.Y;
-            int height = 26;
-            for (int i = 0; i < 50; i++)
+            const int rowHeight = 33;
+            const int maxRows = 50;
+            for (int i = 0; i < maxRows; i++)
             {
-                Color failColor = ScreenBitmap.GetColorAt(new Point(cmd_result.X, cmd_result.Y));
-                if (failColor.R == 220 || failColor.G == 20 || failColor.B == 60)
+                Color failColor = ScreenBitmap.GetColorAt(new Point(cmdResult.X, cmdResult.Y));
+    
+
+                if (failColor.R == FAIL_COLOR.R || failColor.G == FAIL_COLOR.G || failColor.B == FAIL_COLOR.B)
                 {
+                    int width = bottomRight.X - topLeft.X;
+                    int height2 = bottomRight.Y - topLeft.Y;
 
-                    int width = bottom_right.X - top_left.X;
-                    int height2 = bottom_right.Y - top_left.Y;
-
-                    Rectangle rect = new Rectangle(top_left.X, top_left.Y, width, height2);
+                    Rectangle rect = new Rectangle(topLeft.X, topLeft.Y, width, height2);
                     using (Bitmap screenshot = new Bitmap(rect.Width, rect.Height))
                     {
                         using (Graphics g = Graphics.FromImage(screenshot))
@@ -106,6 +115,7 @@ namespace auto_click_by_pos
                         // Optional: Save screenshot for debug
                         screenshot.Save("screenshot.png", System.Drawing.Imaging.ImageFormat.Png);
 
+
                         // OCR
                         string tessDataPath = "./tessdata";
                         using (var engine = new TesseractEngine(tessDataPath, "eng", EngineMode.Default))
@@ -113,55 +123,60 @@ namespace auto_click_by_pos
                         using (var page = engine.Process(pix))
                         {
                             result = page.GetText();
-
-                            // Console.WriteLine("Text in captured screen area:");
-                            // Console.WriteLine(result.Trim());
                         }
 
                     }
                     break;
                 }
 
-                top_left.Y += height;
-                bottom_right.Y += height;
-                cmd_result.Y += height;
-                measure_top_left.Y += height;
-                measure_bottom_right.Y += height;
+                topLeft.Y += rowHeight;
+                bottomRight.Y += rowHeight;
+                cmdResult.Y += rowHeight;
+                // measure_top_left.Y += height;
+                // measure_bottom_right.Y += height;
             }
 
 
             return result;
         }
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             ScreenBitmap.SetProcessDPIAware(); // Make sure to get correct screen coordinates on high-DPI displays 
             if (args.Length > 0 && args[0] == "toan")
             {
                 int testTime = 0;
-                Console.WriteLine("---Auto Click Start!---");
+                Console.WriteLine($"[{DateTime.Now}] ---Auto Click Start!---");
                 while (true)
                 {
                     Color finishColor = ScreenBitmap.GetColorAt(new Point(PASS_LABEL.X, PASS_LABEL.Y));
                     Thread.Sleep(500);
-                    while (finishColor.R != 0 || finishColor.G != 130 || finishColor.B != 0)
+                    while (finishColor.R != PASS_COLOR.R || finishColor.G != PASS_COLOR.G || finishColor.B != PASS_COLOR.B)
                     {
                         finishColor = ScreenBitmap.GetColorAt(new Point(PASS_LABEL.X, PASS_LABEL.Y));
                         Thread.Sleep(500);
-                        if (finishColor.R == 222 || finishColor.G == 20 || finishColor.B == 57)
+                        if (finishColor.R == FAIL_COLOR.R || finishColor.G == FAIL_COLOR.G || finishColor.B == FAIL_COLOR.B)
                         {
-                            Console.WriteLine("FAIL DETECTED! Saving image and extracting command... then exit.");
+                            Console.WriteLine($"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] FAIL DETECTED! Saving image and extracting command... then exit.");
                             SaveFailImg();
                             string measureResult = "";
                             string failCmd = GetFailCmd(measureResult);
                             Console.WriteLine(failCmd);
-                            //failCmd.Trim() == "[TCU_STD] START_TOOL" ||
+                            try 
+                            {
+                                await NotificationService.SendPopupAsync("10.224.89.245", "Reproduced!");
+                                Console.WriteLine(" Successfully: Đã gửi lệnh popup sang máy B.");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($" Failed: Không gửi được thông báo. Lỗi: {ex.Message}");
+                            }
 
                             bool isFound = reproducingCmds.Any(cmd => failCmd.Trim().Contains(cmd));
 
-                            // if (!isFound)
-                            // {
-                            //     break;
-                            // }
+                            if (!isFound)
+                            {
+                                break;
+                            }
 
                             if (usePcan)
                             {
@@ -181,7 +196,9 @@ namespace auto_click_by_pos
                     testTime++;
                     Console.WriteLine("Test Again! " + testTime.ToString());
                     Thread.Sleep(2000);
-                    MouseClick.DoMouseLeftDoubleClick(START_BUTTON.X, START_BUTTON.Y, true);
+                    MouseClick.DoMouseLeftClick(START_BUTTON.X, START_BUTTON.Y, true);
+                    Thread.Sleep(2000);
+                    MouseClick.DoMouseLeftClick(START_BUTTON.X, START_BUTTON.Y, true);
                     // Thread.Sleep(300);
                     // MouseClick.DoMouseLeftClick(START_BUTTON.X, START_BUTTON.Y, true);
                     // Thread.Sleep(300);

@@ -10,9 +10,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.2" />
     <PackageReference Include="System.Drawing.Common" Version="9.0.6" />
     <PackageReference Include="Tesseract" Version="5.2.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="NotificationClient">
+      <!-- Dán đường dẫn tuyệt đối vào đây -->
+      <HintPath>..\NotificationClient\bin\Release\net9.0\NotificationClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0-windows</TargetFramework>
